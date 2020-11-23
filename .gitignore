@@ -1,0 +1,9 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/TextQuery.vcxproj.user
+/TextQuery.vcxproj.filters
+/TextQuery.vcxproj
+/Release
+/Debug
