@@ -147,10 +147,15 @@ int main() {
 	//zungleif::Blob<std::string> blob(vec.begin(), vec.end());
 	//cout << *blob.begin() << endl;
 	zungleif::Blob<int> b{1, 3, 4, 5};
+	cout << *b.begin() << endl;
 	int a = 323;
 	zungleif::shared_ptr<int> sptr;
 	zungleif::shared_ptr<int> sptr_ = zungleif::make_shared<int>(3232);
 	sptr = sptr_;
 	cout << *sptr << "use count: " << sptr.use_count()<< endl;
+	zungleif::compare<const char*>("owo", "what");
+	int lval = 3;
+	zungleif::flip(zungleif::test_func, 42, lval);
+	cout << lval << endl;
 	return 0;
 }

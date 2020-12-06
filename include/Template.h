@@ -5,6 +5,7 @@
 #include <memory>
 #include <algorithm>
 #include <type_traits>
+#include <utility>
 #include <iostream>
 namespace zungleif {
 	template <typename T> class Blob;
@@ -26,10 +27,10 @@ namespace zungleif {
 	}
 
 	// non-type template parameter
-	template <unsigned N, unsigned M>
-	int compare(const char(&a)[N], const char(&b)[M]) {
-		return strcmp(a, b);
-	}
+	//template <unsigned N, unsigned M>
+	//int compare(const char(&a)[N], const char(&b)[M]) {
+	//	return strcmp(a, b);
+	//}
 
 
 	// 16.4
@@ -518,16 +519,15 @@ namespace zungleif {
 	};
 
 	// 16.29 & 16.30
-	/*template <typename> class BlobPtr;
-	template <typename T> class Blob {
-		friend class BlobPtr<T>;
+	template <typename T> class BlobAlter {
 	public:
+		using typename vector<T>::iterator;
 		using value_type = T;
-		using size_type = typename std::vector<T>::size_type;
+		using size_type = typename vector<T>::size_type;
 
-		Blob() : blob_ptr(std::make_shared<std::vector<T>>()) {}
-		Blob(const std::initializer_list<T>& il) : blob_ptr(std::make_shared<std::vector<T>>(il)) {}
-		template<typename Iter> Blob(Iter _begin, Iter _end);
+		BlobAlter() : blob_ptr(make_shared<vector<T>>()) {}
+		BlobAlter(const std::initializer_list<T>& il) : blob_ptr(make_shared<vector<T>>(il)) {}
+		//template<typename Iter> BlobAlter(Iter _begin, Iter _end);
 		size_type size() const { return blob_ptr->size(); }
 		bool empty() const { return blob_ptr->empty(); }
 
@@ -535,17 +535,130 @@ namespace zungleif {
 		void push_back(const T&& val) { blob_ptr->push_back(std::move(val)); }
 		void pop_back() { blob_ptr->pop_back(); }
 
-		constexpr BlobPtr<T> begin() { return BlobPtr<T>(*this); }
-		constexpr BlobPtr<T> begin() const { return BlobPtr<T>(*this); }
-		constexpr BlobPtr<T> end() { return BlobPtr<T>(*this, blob_ptr->size()); }
-		constexpr BlobPtr<T> end() const { return BlobPtr<T>(*this, blob_ptr->size()); }
+		iterator begin() { return blob_ptr->begin(); }
+		iterator end() { return blob_ptr->end(); }
 
-		constexpr T& front() const;
-		constexpr T& back() const;
-		constexpr T& operator[](size_type sz);
+		//constexpr T& front() const { return (*blob_ptr).front(); }
+		//constexpr T& back() const { return (*blob_ptr).back(); }
+		//constexpr T& operator[](size_type sz);
 
 	private:
-		std::shared_ptr<std::vector<T>> blob_ptr;
-		void check(const size_type sz, const std::string& msg) const;
-	};*/
+		shared_ptr<vector<T>> blob_ptr;
+		//void check(const size_type sz, const std::string& msg) const;
+	};
+
+	// 16.32
+
+	// 16.33
+	// const 변환 & 배열 또는 함수 -> 포인터 변환
+
+	// 16.34
+	// template <class T> int compare(const T&, const T&);
+	// (a) compare ("hi", "world");
+	// char[3], char[6], T 타입 추론이 불가능하다
+	// (b) compare ("bye", "dad");
+	// T 는 char[4]
+
+	// 16.35
+	template <typename T> T calc(T a, int b) { return a; }
+	template <typename T> T fcn(T a, T b) { return a; }
+	double d; float f; char c;
+	// (a) calc(c, 'c');
+	// 가능. T 는 char 이고 int 매개변수에 넘겨준 인자 'c' 는 char 이지만
+	// 템플릿 매개변수가 아니므로 기본 형변환이 적용된다.
+	// (b) calc(d, f);
+	// 가능. T 는 double 이고 float -> int 변환이 적용된다.
+	// (c) fcn(c, 'c');
+	// 가능 T 는 char 형으로 c 와 'c' 둘 다 동일하다.
+	// (d) fcn(d, f);
+	// 템플릿 매개변수에서 가능한 변환은 const 변환과 배열 -> 포인터 변환과 없다
+	// 따라서 여기서 T 를 추론해낼 수 없다.
+
+	// 16.36
+	template <typename T> void f1(T a, T b) {}
+	template <typename T1, typename T2> void f2(T1 a, T2 b) {}
+	int i = 0, j = 42, *p1 = &i, *p2 = &j;
+	const int *cp1 = &i, *cp2 = &j;
+	// (a) f1(p1, p2);
+	// f1(int*, int*) 호출
+	// (b) f2(p1, p2);
+	// f2(int*, int*) 호출
+	// (c) f1(cp1, cp2);
+	//
+	// (d) f2(cp1, cp2);
+	// 
+	// (e) f1(p1, cp1);
+	// 
+	// (f) f2(p1, cp1);
+
+	// 16.38
+	// make_shared 에선 shared_ptr 객체를 할당시켜 반환한다 shared_ptr 은 템플릿 클래스로
+	// 명시적으로 템플릿 인자를 지정해야한다. 또한 반환되는 객체의 타입은 shared_ptr<T> 로, 
+	// 인자를 통해 추론이 불가능하다.
+	
+	// 16.39
+	// compare<const char*>("owo", "what");
+	
+	// 16.40
+	template <typename It>
+	auto fcn3(It beg, It end) -> decltype(*beg + 0)
+	{
+		/* ... */
+		return *beg;
+	}
+	// *beg 는 반복자가 가리키고 있는 참조자이다 (lvalue) 
+	// 여기서 + 연산을 한다면 그 결과는 rvalue 일 것이다.
+	// 따라서 beg 가 가리키고 있는 타입에 + 연산이 존재한다면
+	// 이 함수는 적법하고 반환값은 int 형이 될 것이다.
+
+	// 16.41
+	template <typename T>
+	auto sum(int a, int b)-> typename std::make_unsigned<decltype(a)>::type
+	{
+		auto s = a + b;
+		return s;
+	}
+	
+	// 16.42
+	template <typename T> void g(T&& val) {}
+	//int i = 0; const int ci = i;
+	// (a) g(i);
+	// T: int&, val: int& && -> int&
+	// (b) g(ci);
+	// T: const int&, val: const int& && -> const int&
+	// (c) g(i * ci);
+	// T: int, val: int&&
+
+	// 16.43
+	// g(i = ci)
+
+	// 16.44
+	// template <typename T> void g(T val) {} 일 경우 | template <typename T> void g(const T& val) {} 일 경우
+	// (a) g(i);
+	// int | int
+	// (b) g(ci);
+	// const int | int
+	// (c) g(i * ci);
+	// int | int
+
+	// 16.45
+	// template <typename T> void g(T&& val) { vector<T> v; }
+	// 인자가 42 (rvalue):
+	// T 는 int, vector<int> 인스턴스화
+	// 인자가 int 타입 변수 (lvalue):
+	// T 는 int&, vector<int&> 인스턴스화
+
+	// 16.47
+	template <typename F, typename T1, typename T2>
+	void flip(F f, T1&& t1, T2&& t2) {
+		f(std::forward<T2>(t2), std::forward<T1>(t1));
+	}
+	// std::forward 가 없으면 lvalue 를 rvalue reference 로 변환할 수 없다고 오류가 나온다
+	void test_func(int& a, int&& b) {
+		std::cout << a << " " << b << std::endl;
+		std::cout << "test func called\n";
+		a = 5;
+	}
+
+	// 16.48
 }
