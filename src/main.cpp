@@ -139,23 +139,34 @@ int main() {
 	*it = "Lee";
 	cout << *it << endl;
 	zungleif::Screen<1920, 1080> scr;*/
-	zungleif::vector<std::string> vec{"hellow" , "fuck"};
+	zungleif::vector<std::string> vec{ "hellow" , "fuck" };
 	cout << *vec.begin() << endl;
-	zungleif::vector<int> int_vec{1,2,3};
+	zungleif::vector<int> int_vec{ 1,2,3 };
 	cout << std::boolalpha << (bool)nullptr;
 
 	//zungleif::Blob<std::string> blob(vec.begin(), vec.end());
 	//cout << *blob.begin() << endl;
-	zungleif::Blob<int> b{1, 3, 4, 5};
+	zungleif::Blob<int> b{ 1, 3, 4, 5 };
 	cout << *b.begin() << endl;
 	int a = 323;
 	zungleif::shared_ptr<int> sptr;
 	zungleif::shared_ptr<int> sptr_ = zungleif::make_shared<int>(3232);
 	sptr = sptr_;
-	cout << *sptr << "use count: " << sptr.use_count()<< endl;
+	cout << *sptr << "use count: " << sptr.use_count() << endl;
 	zungleif::compare<const char*>("owo", "what");
 	int lval = 3;
 	zungleif::flip(zungleif::test_func, 42, lval);
 	cout << lval << endl;
+	int i = 42, *p = &i;
+	const int ci = 0, *p2 = &ci;
+	
+	zungleif::g(42);
+	zungleif::g(p);
+	zungleif::g(ci);
+	zungleif::g(p2);
+	zungleif::f(42);
+	zungleif::f(p);
+	zungleif::f(ci);
+	zungleif::f(p2);
 	return 0;
 }

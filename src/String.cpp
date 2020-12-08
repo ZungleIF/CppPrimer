@@ -8,7 +8,7 @@ allocator<char> String::alloc;
 String::String(const char *c_str) {
 	size_t size = c_str_len(c_str);
 	_begin = _end = alloc.allocate(size);
-	for (size_t i = 0; i < size; i++) 
+	for (size_t i = 0; i < size; i++)
 		alloc.construct(_end++, *c_str++);
 }
 
