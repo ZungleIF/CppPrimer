@@ -14,11 +14,10 @@ namespace zungleif {
 	template <typename T> class vector;
 	template <typename T> class shared_ptr;
 
-
 	// template type parameter
 	template <typename T> int compare(const T& a, const T& b) {
-		if (std::less<T>()(a, b)) return -1;
-		if (std::less<T>()(b, a)) return 1;
+		if (std::less<T>()(a, b))            return -1;
+		else if (std::less_equal<T>()(b, a)) return 1;
 	}
 
 	// template type parameter /w inline
@@ -224,13 +223,13 @@ namespace zungleif {
 			value_type& operator[](size_type);
 			value_type& at(size_type);
 
-			constexpr iterator begin() { return _begin; }
+			constexpr iterator begin()             { return _begin; }
 			constexpr const_iterator begin() const { return _begin; }
-			constexpr iterator end() { return _end; }
-			constexpr const_iterator end() const { return _end; }
+			constexpr iterator end()               { return _end; }
+			constexpr const_iterator end() const   { return _end; }
 
-			constexpr size_diff size() const { return _end - _begin; }
-			constexpr size_diff capacity() const { return _cap - _begin; }
+			constexpr size_diff size() const       { return _end - _begin; }
+			constexpr size_diff capacity() const   { return _cap - _begin; }
 
 			void push_back(const T&);
 			void resize(size_type);
@@ -416,7 +415,7 @@ namespace zungleif {
 
 			explicit operator bool() const noexcept { return get() != nullptr; }
 
-			count_size_type use_count() const { if (ref_count)	return *ref_count; }
+			count_size_type use_count() const { if (ref_count) return *ref_count; else return 0; }
 			T* get() const { return operator*(); }
 			shared_ptr& reset(T*);
 			shared_ptr& reset(T*, deleter_type);
@@ -427,9 +426,9 @@ namespace zungleif {
 			void check_n_destroy();
 		};
 
-		template <typename T, typename U> bool operator==(const shared_ptr<T>& lhs, const shared_ptr<U>& rhs) noexcept;
-		template <typename T> void swap(shared_ptr<T>& lhs, shared_ptr<T>& rhs) noexcept;
-		template <typename T> shared_ptr<T> make_shared(T&&); // -> non-const rvalue
+		template <typename T, typename U> bool operator==            (const shared_ptr<T>& lhs, const shared_ptr<U>& rhs) noexcept;
+		template <typename T            > void swap                  (shared_ptr<T>& lhs, shared_ptr<T>& rhs) noexcept;
+		template <typename T            > shared_ptr<T> make_shared  (T&&); // -> non-const rvalue
 
 		template <typename T>
 		shared_ptr<T>::shared_ptr(const shared_ptr& org)
@@ -531,15 +530,15 @@ namespace zungleif {
 			BlobAlter() : blob_ptr(make_shared<vector<T>>()) {}
 			BlobAlter(const std::initializer_list<T>& il) : blob_ptr(make_shared<vector<T>>(il)) {}
 			//template<typename Iter> BlobAlter(Iter _begin, Iter _end);
-			size_type size() const { return blob_ptr->size(); }
-			bool empty() const { return blob_ptr->empty(); }
+			size_type size() const        { return blob_ptr->size(); }
+			bool empty() const            { return blob_ptr->empty(); }
 
-			void push_back(const T& val) { blob_ptr->push_back(val); }
+			void push_back(const T& val)  { blob_ptr->push_back(val); }
 			void push_back(const T&& val) { blob_ptr->push_back(std::move(val)); }
-			void pop_back() { blob_ptr->pop_back(); }
+			void pop_back()               { blob_ptr->pop_back(); }
 
-			iterator begin() { return blob_ptr->begin(); }
-			iterator end() { return blob_ptr->end(); }
+			iterator begin()              { return blob_ptr->begin(); }
+			iterator end()                { return blob_ptr->end(); }
 
 			//constexpr T& front() const { return (*blob_ptr).front(); }
 			//constexpr T& back() const { return (*blob_ptr).back(); }
@@ -685,11 +684,12 @@ namespace zungleif {
 		// cstring 이 올 경우, debug_rep(*p) 에서 cstring 의 맨 앞 글자만
 		// ostringstream 에 이어 붙이는 꼴이 된다
 
-		// 3. 따라서, cstring 을 string 으로 변환해 재귀호출하는 비템플릿 함수로 오버로딩한다
+		// 3-a. 따라서, cstring 을 string 으로 변환해 재귀호출하는 비템플릿 함수로 오버로딩한다
 		std::string debug_pre(char* p) {
-			// 1. 함수를 호출한다. 
+			// 1.번 함수를 호출한다. 
 			return debug_rep(std::string(p));
 		}
+		// 3-b. const char 에 대한 포인터 버전
 		std::string debug_rep(const char* p) {
 			return debug_rep(std::string(p));
 		}
@@ -722,15 +722,50 @@ namespace zungleif {
 			f(p2);
 		}
 		// 16.51 & 16.52
-		template <typename ...Args> void g_1(Args ... args) {
+		template <typename T, typename ...Args> 
+		void g_1(const T& ta, Args ... args) {
 			std::cout << sizeof...(Args) << std::endl;
 			std::cout << sizeof...(args) << std::endl;
 		}
-		// sizeof..(Args)
+
 		void test_template_2() {
 			int i = 42, *p = &i;
 			const int ci = 0, *p2 = &ci;
 			g_1(1, 2, 3, 4, 5);
 			g_1(1, "Hello", 'o', 'w', 'o', 3.14);
+		}
+
+		// 16.53
+		template <typename T>
+		std::ostream& print(std::ostream& os, const T& val) {
+			os << val;
+			return os;
+		}
+
+		template <typename T, typename ...Args>
+		std::ostream& print(std::ostream& os, const T& val, const Args& ...rest) {
+			os << val << " ";
+			print(os, rest...);
+			return os;
+		}
+
+
+
+		// 16.54
+		// 오른쪽 피연산자에 대한 이항 << 연산자가 없다고 오류가 뜬다
+
+		// 16.55 
+		// 15.53 에서 두 템플릿 함수의 정의 순서를 바꿀 경우 알맞게 오버로딩된 함수가 없다고 뜬다
+		// 그리고 설령 실행된다 해도, 가변인자 템플릿 함수에서 재귀호출을 멈출 방법이 없다.
+
+		// 16.56
+		// 타입 매개변수 오른쪽에 있는 ... -> 묶음 확장
+		template <typename ...Args>
+		std::ostream& error_msg(std::ostream& os, const Args&... rest) {
+			print(os, debug_rep(rest)...);
+			// debug_rep(rest..) -> rest 확장이 debug_rep 의 인자로 전달된다
+			// print(os, debug_rep(rest)...) -> rest 확장한 인자마다 debug_rep 에 전달하고
+			// 그 결과값이 print 함수의 가변인자가 된다
+			return os;
 		}
 }

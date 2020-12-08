@@ -159,5 +159,8 @@ int main() {
 	cout << lval << endl;
 	
 	zungleif::test_template_2();
+	zungleif::print(cout, "hello");
+	zungleif::print(cout, 1, "test", 'c');
+	zungleif::print(cout, 1, "2", Sales_data("my_book", 5, 0.1), string("hmm"), 3.14);
 	return 0;
 }
