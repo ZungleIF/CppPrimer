@@ -709,11 +709,28 @@ namespace zungleif {
 		// f(p);  // T 가 int* 인 f(int*)
 		// f(ci); // T 가 const int 인 f(const int)
 		// f(p2); // T 가 int 인 f(const int*)
-
+		void test_template_1() {
+			int i = 42, *p = &i;
+			const int ci = 0, *p2 = &ci;
+			g(42);
+			g(p);
+			g(ci);
+			g(p2);
+			f(42);
+			f(p);
+			f(ci);
+			f(p2);
+		}
 		// 16.51 & 16.52
-		template <typename ...Args> void g(Args ... args) {
+		template <typename ...Args> void g_1(Args ... args) {
 			std::cout << sizeof...(Args) << std::endl;
 			std::cout << sizeof...(args) << std::endl;
 		}
 		// sizeof..(Args)
+		void test_template_2() {
+			int i = 42, *p = &i;
+			const int ci = 0, *p2 = &ci;
+			g_1(1, 2, 3, 4, 5);
+			g_1(1, "Hello", 'o', 'w', 'o', 3.14);
+		}
 }

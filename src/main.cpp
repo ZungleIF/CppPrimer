@@ -157,16 +157,7 @@ int main() {
 	int lval = 3;
 	zungleif::flip(zungleif::test_func, 42, lval);
 	cout << lval << endl;
-	int i = 42, *p = &i;
-	const int ci = 0, *p2 = &ci;
 	
-	zungleif::g(42);
-	zungleif::g(p);
-	zungleif::g(ci);
-	zungleif::g(p2);
-	zungleif::f(42);
-	zungleif::f(p);
-	zungleif::f(ci);
-	zungleif::f(p2);
+	zungleif::test_template_2();
 	return 0;
 }
