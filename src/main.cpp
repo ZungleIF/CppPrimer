@@ -9,6 +9,7 @@
 #include "Quote.h"
 #include "RadixSort.h"
 #include "Template.h"
+#include <utility>
 #include <iostream>
 #include <list>
 using namespace std;
@@ -162,5 +163,14 @@ int main() {
 	zungleif::print(cout, "hello");
 	zungleif::print(cout, 1, "test", 'c');
 	zungleif::print(cout, 1, "2", Sales_data("my_book", 5, 0.1), string("hmm"), 3.14);
+
+	StrVec strv;
+	strv.emplace_back("hi", "OwO", "what's this");
+	for_each(strv.begin(), strv.end(),
+					 [](const string& str) {
+						 cout << str << endl;
+					 }
+	);
+	zungleif::make_shared<pair<int, int>>( 1,2 );
 	return 0;
 }

@@ -18,19 +18,24 @@ public:
 	~StrVec();
 
 	StrVec& operator=(const std::initializer_list<std::string>&);
-	std::string& operator[](std::size_t n)						{ return elements[n]; }
+	std::string& operator[](std::size_t n)						        { return elements[n]; }
 	const std::string& operator[](const std::size_t n) const	{ return elements[n]; }
 
-	SVIter begin() const		{ return elements; }
-	SVIter end() const			{ return first_free; }
-	std::string front() const	{ return *elements; }
-	std::string back() const	{ return *first_free; }
+	SVIter begin() const		                                  { return elements; }
+	SVIter end() const			                                  { return first_free; }
+	std::string front() const	                                { return *elements; }
+	std::string back() const	                                { return *first_free; }
 
-	size_t size() const			{ return first_free - elements; }
-	size_t capacity() const		{ return cap - elements; }
+	size_t size() const			                                  { return first_free - elements; }
+	size_t capacity() const		                                { return cap - elements; }
 
 	void resize(size_t);
 	void push_back(const std::string&);
+	
+	template <typename T>
+	void emplace_back(T&&);
+	template <typename T, typename ...Args>
+	void emplace_back(T&&, Args&&...);
 
 private:
 	SVIter elements = nullptr;		// -> the first element
@@ -50,4 +55,21 @@ private:
 
 	void free();
 	void realloc();
+
+
 };
+
+template <typename T>
+inline
+void StrVec::emplace_back(T&& t) {
+	check_n_alloc();
+	alloc.construct(first_free++, std::forward<T>(t));
+}
+
+template <typename T, typename ...Args>
+inline
+void StrVec::emplace_back(T&& t, Args&&... rest) {
+	check_n_alloc();
+	alloc.construct(first_free++, std::forward<T>(t));
+	emplace_back(std::forward<Args>(rest)...);
+}

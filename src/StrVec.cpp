@@ -92,7 +92,7 @@ void StrVec::push_back(const string& str) {
 
 allocator<string> StrVec::alloc;
 
-void StrVec::check_n_alloc() {
+inline void StrVec::check_n_alloc() {
 	if (size() == capacity())
 		realloc();
 }

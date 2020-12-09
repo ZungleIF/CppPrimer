@@ -396,7 +396,7 @@ namespace zungleif {
 	class shared_ptr {
 		template <typename T, typename U> friend bool operator==(const shared_ptr<T>&, const shared_ptr<U>&) noexcept;
 		template <typename T> friend void swap(shared_ptr<T>&, shared_ptr<T>&) noexcept;
-		template <typename T> friend shared_ptr<T> make_shared(T&& val);
+		template <typename T, typename ...Args> friend shared_ptr<T> make_shared(Args&&...);
 	public:
 		using element_type = typename std::remove_extent<T>::type;
 		using count_size_type = std::size_t;
@@ -428,7 +428,7 @@ namespace zungleif {
 
 	template <typename T, typename U> bool operator==            (const shared_ptr<T>& lhs, const shared_ptr<U>& rhs) noexcept;
 	template <typename T            > void swap                  (shared_ptr<T>& lhs, shared_ptr<T>& rhs) noexcept;
-	template <typename T            > shared_ptr<T> make_shared  (T&&); // -> non-const rvalue
+	template <typename T, typename ...Args> shared_ptr<T> make_shared  (Args&&...); // -> non-const rvalue
 
 	template <typename T>
 	shared_ptr<T>::shared_ptr(const shared_ptr& org)
@@ -505,11 +505,12 @@ namespace zungleif {
 	// TODO:
 	// move constructor called when returning temp? why?
 	// => temp is a r-value, therefore, returns using move constructor, not copy constructor
-	template <typename T>
-	shared_ptr<T> make_shared(T&& val) {
-		shared_ptr<T> temp;
-		temp.mem = new T(val);
-		return temp;
+	// turns out temp(a class-type variable) is also l-value
+	// => use std::forward
+
+	template <typename T, typename ...Args>
+	shared_ptr<T> make_shared(Args&&... args) {
+		return shared_ptr<T>(new T(std::forward<Args>(args)...));
 	}
 
 
@@ -768,4 +769,10 @@ namespace zungleif {
 		// 그 결과값이 print 함수의 가변인자가 된다
 		return os;
 	}
+
+	// 16.58
+	// StrVec.h 참고
+
+	// 16.61
+	// 위의 class shared_ptr 참고
 }
