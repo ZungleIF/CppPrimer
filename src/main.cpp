@@ -141,54 +141,54 @@ int main() {
 	*it = "Lee";
 	cout << *it << endl;
 	zungleif::Screen<1920, 1080> scr;*/
-	//zungleif::vector<std::string> vec{ "hellow" , "fuck" };
-	//cout << *vec.begin() << endl;
-	//zungleif::vector<int> int_vec{ 1,2,3 };
-	//cout << std::boolalpha << (bool)nullptr;
+	zungleif::vector<std::string> vec{ "hellow" , "fuck" };
+	cout << *vec.begin() << endl;
+	zungleif::vector<int> int_vec{ 1,2,3 };
+	cout << std::boolalpha << (bool)nullptr;
 
-	////zungleif::Blob<std::string> blob(vec.begin(), vec.end());
-	////cout << *blob.begin() << endl;
-	//zungleif::Blob<int> b{ 1, 3, 4, 5 };
-	//cout << *b.begin() << endl;
-	//int a = 323;
-	//zungleif::shared_ptr<int> sptr;
-	//zungleif::shared_ptr<int> sptr_ = zungleif::make_shared<int>(3232);
-	//sptr = sptr_;
-	//cout << *sptr << "use count: " << sptr.use_count() << endl;
-	//zungleif::compare<const char*>("owo", "what");
-	//int lval = 3;
-	//zungleif::flip(zungleif::test_func, 42, lval);
-	//cout << lval << endl;
-	//
-	//zungleif::test_template_2();
-	//zungleif::print(cout, "hello");
-	//zungleif::print(cout, 1, "test", 'c');
-	//zungleif::print(cout, 1, "2", Sales_data("my_book", 5, 0.1), string("hmm"), 3.14);
+	//zungleif::Blob<std::string> blob(vec.begin(), vec.end());
+	//cout << *blob.begin() << endl;
+	zungleif::Blob<int> b{ 1, 3, 4, 5 };
+	cout << *b.begin() << endl;
+	int a = 323;
+	zungleif::shared_ptr<int> sptr;
+	zungleif::shared_ptr<int> sptr_ = zungleif::make_shared<int>(3232);
+	sptr = sptr_;
+	cout << *sptr << "use count: " << sptr.use_count() << endl;
+	zungleif::compare<const char*>("owo", "what");
+	int lval = 3;
+	zungleif::flip(zungleif::test_func, 42, lval);
+	cout << lval << endl;
+	
+	zungleif::test_template_2();
+	zungleif::print(cout, "hello");
+	zungleif::print(cout, 1, "test", 'c');
+	zungleif::print(cout, 1, "2", Sales_data("my_book", 5, 0.1), string("hmm"), 3.14);
 
-	//StrVec strv;
-	//strv.emplace_back("hi", "OwO", "what's this");
-	//for_each(strv.begin(), strv.end(),
-	//				 [](const string& str) {
-	//					 cout << str << endl;
-	//				 }
-	//);
-	//zungleif::make_shared<pair<int, int>>( 1,2 );
+	StrVec strv;
+	strv.emplace_back("hi", "OwO", "what's this");
+	for_each(strv.begin(), strv.end(),
+					 [](const string& str) {
+						 cout << str << endl;
+					 }
+	);
+	zungleif::make_shared<pair<int, int>>( 1,2 );
 
-	//unordered_multiset<Sales_data> sdms;
-	//sdms.insert({Sales_data("book", 3, 0.1), Sales_data("his book", 4, 0.5)});
-	//for_each(sdms.begin(), sdms.end(), 
-	//				 [](const Sales_data& sd) {
-	//					 cout << sd;
-	//				 }
-	//);
-	//cout << endl;
-	//cout << *sdms.find(Sales_data("book", 3, 0.1)) << endl;
-	//vector<int> vi{1, 2, 2, 3, 4, 5, 2, 6, 7, 2, 1, 3, 10};
-	//vector<double> dv{3.14, 8.23121, 1.23, 323.123, 3.14, 3.14, 16.78676};
-	//vector<string> sv{"string", "owo", "owo", "owo", "lol", "trololo", "owo"};
-	//cout << zungleif::count(vi, 2) << " " << zungleif::count(dv, 3.14) << " " 
-	//	<< zungleif::count(sv, string("owo")) << endl;
-	//vector<const char*> ccv{ "hello", "owo", "whats", "this", "owo", "owo" };
-	//cout << zungleif::count(ccv, "owo") << endl;
+	unordered_multiset<Sales_data> sdms;
+	sdms.insert({Sales_data("book", 3, 0.1), Sales_data("his book", 4, 0.5)});
+	for_each(sdms.begin(), sdms.end(), 
+					 [](const Sales_data& sd) {
+						 cout << sd;
+					 }
+	);
+	cout << endl;
+	cout << *sdms.find(Sales_data("book", 3, 0.1)) << endl;
+	vector<int> vi{1, 2, 2, 3, 4, 5, 2, 6, 7, 2, 1, 3, 10};
+	vector<double> dv{3.14, 8.23121, 1.23, 323.123, 3.14, 3.14, 16.78676};
+	vector<string> sv{"string", "owo", "owo", "owo", "lol", "trololo", "owo"};
+	cout << zungleif::count(vi, 2) << " " << zungleif::count(dv, 3.14) << " " 
+		<< zungleif::count(sv, string("owo")) << endl;
+	vector<const char*> ccv{ "hello", "owo", "whats", "this", "owo", "owo" };
+	cout << zungleif::count(ccv, "owo") << endl;
 	return 0;
 }
