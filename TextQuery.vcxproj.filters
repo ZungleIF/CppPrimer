@@ -71,12 +71,6 @@
     <ClInclude Include="include\TextQuery.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Ch13.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\FunctionCallOp.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\HasPtr.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -87,6 +81,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\MyString.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ch_13.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\function_call_op.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ch_17.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
