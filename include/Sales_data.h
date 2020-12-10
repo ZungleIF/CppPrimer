@@ -1,8 +1,11 @@
 #pragma once
 #include <string>
 #include <iostream>
+template <typename T> struct std::hash;
 class Sales_data
 {	
+	friend struct std::hash<Sales_data>;
+	friend bool operator==(const Sales_data&, const Sales_data&);
 	friend Sales_data operator+(const Sales_data&, const Sales_data&);
 	friend std::istream &operator>>(std::istream&, Sales_data&);
 	friend std::ostream &operator<<(std::ostream&, const Sales_data&);
@@ -28,9 +31,20 @@ private:
 	double revenue = 0.0;
 };
 
-//bool operator==(const Sales_data &lhs, const Sales_data &rhs);
+bool operator==(const Sales_data &lhs, const Sales_data &rhs);
 Sales_data operator+(const Sales_data &lhs, const Sales_data &rhs);
 std::istream &operator>>(std::istream &is, Sales_data &rhs);
 std::ostream &operator<<(std::ostream &os, const Sales_data &rhs);
 
+
 void check_bookNo(const Sales_data&, const Sales_data&);
+
+// hash class specialization for unordered_multiset of Sales_data
+namespace std {
+	template <>
+	struct hash<Sales_data> {
+		using result_type = size_t;
+		using argument_type = Sales_data;
+		size_t operator()(const Sales_data&) const;
+	};
+}

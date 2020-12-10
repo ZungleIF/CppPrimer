@@ -10,6 +10,7 @@
 #include "RadixSort.h"
 #include "Template.h"
 #include <utility>
+#include <unordered_set>
 #include <iostream>
 #include <list>
 using namespace std;
@@ -172,5 +173,22 @@ int main() {
 					 }
 	);
 	zungleif::make_shared<pair<int, int>>( 1,2 );
+
+	unordered_multiset<Sales_data> sdms;
+	sdms.insert({Sales_data("book", 3, 0.1), Sales_data("his book", 4, 0.5)});
+	for_each(sdms.begin(), sdms.end(), 
+					 [](const Sales_data& sd) {
+						 cout << sd;
+					 }
+	);
+	cout << endl;
+	cout << *sdms.find(Sales_data("book", 3, 0.1)) << endl;
+	vector<int> vi{1, 2, 2, 3, 4, 5, 2, 6, 7, 2, 1, 3, 10};
+	vector<double> dv{3.14, 8.23121, 1.23, 323.123, 3.14, 3.14, 16.78676};
+	vector<string> sv{"string", "owo", "owo", "owo", "lol", "trololo", "owo"};
+	cout << zungleif::count(vi, 2) << " " << zungleif::count(dv, 3.14) << " " 
+		<< zungleif::count(sv, string("owo")) << endl;
+	vector<const char*> ccv{ "hello", "owo", "whats", "this", "owo", "owo" };
+	cout << zungleif::count(ccv, "owo") << endl;
 	return 0;
 }

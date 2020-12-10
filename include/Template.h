@@ -79,7 +79,7 @@ namespace zungleif {
 		friend class BlobPtr<T>;
 	public:
 		using value_type = T;
-		using size_type = typename std::vector<T>::size_type;
+		using size_type  = typename std::vector<T>::size_type;
 
 		Blob() : blob_ptr(std::make_shared<std::vector<T>>()) {}
 		Blob(const std::initializer_list<T>& il) : blob_ptr(std::make_shared<std::vector<T>>(il)) {}
@@ -204,12 +204,12 @@ namespace zungleif {
 		friend class iterator<T>;
 		friend class const_iterator<T>;
 	public:
-		using size_type = std::size_t;
-		using value_type = T;
+		using size_type      = std::size_t;
+		using value_type     = T;
 		using reference_type = T & ;
-		using iterator = T * ;
+		using iterator       = T * ;
 		using const_iterator = const T*;
-		using size_diff = std::ptrdiff_t;
+		using size_diff      = std::ptrdiff_t;
 
 		vector() = default;
 		vector(std::initializer_list<T> il);
@@ -398,9 +398,9 @@ namespace zungleif {
 		template <typename T> friend void swap(shared_ptr<T>&, shared_ptr<T>&) noexcept;
 		template <typename T, typename ...Args> friend shared_ptr<T> make_shared(Args&&...);
 	public:
-		using element_type = typename std::remove_extent<T>::type;
+		using element_type    = typename std::remove_extent<T>::type;
 		using count_size_type = std::size_t;
-		using deleter_type = void(*)(T*);
+		using deleter_type    = void(*)(T*);
 		shared_ptr() : ref_count(new count_size_type(1)) {}
 		shared_ptr(T* p) : mem(p), ref_count(new count_size_type(1)) {}
 		shared_ptr(T* p, deleter_type d) : shared_ptr(p), deleter(d) {}
@@ -426,8 +426,8 @@ namespace zungleif {
 		void check_n_destroy();
 	};
 
-	template <typename T, typename U> bool operator==            (const shared_ptr<T>& lhs, const shared_ptr<U>& rhs) noexcept;
-	template <typename T            > void swap                  (shared_ptr<T>& lhs, shared_ptr<T>& rhs) noexcept;
+	template <typename T, typename U      > bool operator==            (const shared_ptr<T>& lhs, const shared_ptr<U>& rhs) noexcept;
+	template <typename T                  > void swap                  (shared_ptr<T>& lhs, shared_ptr<T>& rhs) noexcept;
 	template <typename T, typename ...Args> shared_ptr<T> make_shared  (Args&&...); // -> non-const rvalue
 
 	template <typename T>
@@ -775,4 +775,51 @@ namespace zungleif {
 
 	// 16.61
 	// 위의 class shared_ptr 참고
+
+}
+
+// 16.62
+// Sales_data.h Sales_data.cpp 참고
+
+
+namespace zungleif {
+	// 16.63
+	// define function template
+	template <typename T>
+	size_t count(const std::vector<T>& vt, const T val) {
+		size_t cnt = 0;
+		for_each(vt.begin(), vt.end(),
+						 [&cnt, val](const T& t) {
+							 if (t == val)	++cnt;
+						 });
+		return cnt;
+	}
+	// 16.64
+	template <>
+	size_t count(const std::vector<const char*>& vt, const char * const val) {
+		size_t cnt = 0;
+		for_each(vt.begin(), vt.end(),
+						 [&cnt, val](const char* const& t) {
+							 if(strcmp(t, val))	++cnt;
+						 });
+		return cnt;
+	}
+
+	// 16.65
+	// const char* specialization
+	template <>
+	std::string debug_rep(const char * const& val) {
+		std::ostringstream ret;
+		std::string s(val);
+		ret << s;
+		return ret.str();
+	}	
+	// char* specialization
+	template <>
+		std::string debug_rep(char * const& val) {
+		std::ostringstream ret;
+		std::string s(val);
+		ret << s;
+		return ret.str();
+	}
 }

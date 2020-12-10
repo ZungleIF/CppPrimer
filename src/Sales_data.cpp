@@ -13,6 +13,13 @@ Sales_data& Sales_data::operator=(const std::string& _bookNo) {
 	return *this;
 }
 
+bool operator==(const Sales_data &lhs, const Sales_data &rhs) {
+	return lhs.bookNo == rhs.bookNo &&
+		lhs.unitsSold == rhs.unitsSold &&
+		lhs.revenue == rhs.revenue ?
+		true : false;
+}
+
 Sales_data operator+(const Sales_data &lhs, const Sales_data &rhs) {
 	Sales_data temp = lhs;
 	temp += rhs;
@@ -38,4 +45,11 @@ void check_bookNo(const Sales_data &sd1, const Sales_data &sd2) {
 	if (sd1.isbn() != sd2.isbn()) {
 		throw logic_error("Adding Sales_data with different isbn's");
 	}
+}
+
+size_t hash<Sales_data>::operator()(const Sales_data& sd) const {
+	return
+		hash<unsigned int>()(sd.unitsSold) ^
+		hash<double>()(sd.revenue) ^
+		hash<std::string>()(sd.bookNo);
 }
