@@ -48,7 +48,7 @@ void QueryResult::printResult() const {
 Query::Query(const string& query_str) : qb_ptr(shared_ptr<Query_base>(new WordQuery(query_str))) {}
 
 istream& operator<<(istream& is, const Query& rhs)	{ return is << rhs.rep(); }
-Query operator~(const Query& rhs)					{ return std::shared_ptr<Query_base>(new NotQuery(rhs)); }
+Query operator~(const Query& rhs)					          { return std::shared_ptr<Query_base>(new NotQuery(rhs)); }
 Query operator&(const Query& lhs, const Query& rhs) { return std::shared_ptr<Query_base>(new AndQuery(lhs, rhs)); }
 Query operator|(const Query& lhs, const Query& rhs) { return std::shared_ptr<Query_base>(new OrQuery(lhs, rhs)); }
 

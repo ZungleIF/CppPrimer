@@ -27,6 +27,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ch_17.cpp" />
     <ClCompile Include="src\HasPtr.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Message.cpp" />
