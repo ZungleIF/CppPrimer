@@ -1,4 +1,5 @@
 #include "Sales_data.h"
+#include <algorithm>
 using namespace std;
 
 Sales_data &Sales_data::operator+=(const Sales_data &rhs) {
@@ -52,4 +53,28 @@ size_t hash<Sales_data>::operator()(const Sales_data& sd) const {
 		hash<unsigned int>()(sd.unitsSold) ^
 		hash<double>()(sd.revenue) ^
 		hash<std::string>()(sd.bookNo);
+}
+
+vector<matches> findBook(const vector<vector<Sales_data>>& files,
+                         const string& book_name) {
+  vector<matches> ret;
+  for (auto store = files.cbegin(); store != files.cend(); store++) {
+    auto find = equal_range(store->begin(), store->end(), book_name, compareIsbn);
+    if (find.first != find.second) {
+      ret.push_back(make_tuple(store - files.cbegin(), find.first, find.second));
+    }
+  }
+  return ret;
+}
+
+vector<matches_> findBook_(const vector<vector<Sales_data>>& files,
+                           const string& book_name) {
+  vector<matches_> ret;
+  for (auto store = files.cbegin(); store != files.cend(); store++) {
+    auto find = equal_range(store->begin(), store->end(), book_name, compareIsbn);
+    if (find.first != find.second) {
+      ret.push_back({ static_cast<size_t>(store - files.cbegin()), find.first, find.second });
+    }
+  }
+  return ret;
 }

@@ -1,5 +1,7 @@
 #pragma once
+#include <vector>
 #include <string>
+#include <tuple>
 #include <iostream>
 template <typename T> struct std::hash;
 class Sales_data
@@ -48,3 +50,23 @@ namespace std {
 		size_t operator()(const Sales_data&) const;
 	};
 }
+
+// 17.4
+inline bool compareIsbn(const Sales_data& sd1, const Sales_data& sd2) {
+  return sd1.isbn() == sd2.isbn();
+}
+using matches = std::tuple<std::vector<Sales_data>::size_type,
+                           std::vector<Sales_data>::const_iterator,
+                           std::vector<Sales_data>::const_iterator>;
+std::vector<matches> findBook(const std::vector<std::vector<Sales_data>>& files,
+                              const std::string& book_name);
+
+// 17.6
+struct matches_ {
+  std::vector<Sales_data>::size_type sz;
+  std::vector<Sales_data>::const_iterator begin;
+  std::vector<Sales_data>::const_iterator end;
+};
+std::vector<matches_> findBook_(const std::vector<std::vector<Sales_data>>& files, 
+                                const std::string& book_name);
+
