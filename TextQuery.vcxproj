@@ -27,7 +27,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ch_17.cpp" />
+    <ClCompile Include="src\ch_17.cpp" />
     <ClCompile Include="src\HasPtr.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Message.cpp" />
@@ -40,8 +40,8 @@
     <ClCompile Include="src\TextQuery.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ch_17.h" />
     <ClInclude Include="include\ch_13.h" />
+    <ClInclude Include="include\ch_17.h" />
     <ClInclude Include="include\function_call_op.h" />
     <ClInclude Include="include\HasPtr.h" />
     <ClInclude Include="include\Message.h" />

@@ -2,7 +2,9 @@
 #include <tuple>
 #include <vector>
 #include <string>
+#include <bitset>
 #include <utility>
+#include <boost>
 // tuple, #include <tuple>
 // make_tuple and get<i>(t)
 // 17.1
@@ -69,3 +71,11 @@ void ch_17_2() {
 
 // 17.8
 // Sales_data() 는 멤버를 모두 기본초기화 한다. 따라서 isbn 없이 팔린 부수와 매출만이 출력된다.
+
+// 17.10
+void ch17_10();
+
+// 17.11
+struct TFAnswer {
+
+};

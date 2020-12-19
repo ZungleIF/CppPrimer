@@ -45,7 +45,7 @@
     <ClCompile Include="src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ch_17.cpp">
+    <ClCompile Include="src\ch_17.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -92,7 +92,7 @@
     <ClInclude Include="include\function_call_op.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ch_17.h">
+    <ClInclude Include="include\ch_17.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
