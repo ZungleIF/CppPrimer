@@ -191,5 +191,8 @@ int main() {
 	//	<< zungleif::count(sv, string("owo")) << endl;
 	//vector<const char*> ccv{ "hello", "owo", "whats", "this", "owo", "owo" };
 	//cout << zungleif::count(ccv, "owo") << endl;
+  valid_phone vp;
+  vp.check_pnum();
+  cout << vp;
 	return 0;
 }

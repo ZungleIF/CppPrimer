@@ -5,6 +5,7 @@
 #include <utility>
 #include <string>
 #include <regex>
+#include <queue>
 #include <iostream>
 // tuple, #include <tuple>
 // make_tuple and get<i>(t)
@@ -167,3 +168,82 @@ void ch17_17() {
 }
 
 // 17.18
+void ch17_18() {
+  set<string> exclude{
+    "neighbor", "albeit", "feint",
+    "ceil", "ceiling", "eight"
+  };
+  string str, pattern("[[:alpha:]]*[^c]ei[[:alpha:]]*");
+  regex r(pattern);
+  getline(cin, str);
+  sregex_iterator srit(str.begin(), str.end(), r), end;
+  for_each(srit, end, [exclude](const smatch sm) 
+           {
+             if(exclude.find(sm.str()) == exclude.end())
+              cout << sm.str() << endl;
+           });
+}
+
+// 17.19
+// matched == false 이면, ssub_match::str() 은 빈 string 을 반환한다.
+
+// 17.20, 17.22 
+// TODO
+class valid_phone {
+  friend ostream& operator<<(ostream&, const valid_phone&);
+public:
+  valid_phone() : r("(\\()?(\\d{3})(\\))?([[:blank:]]*)?([-.])?(\\d{3})([[:blank:]]*)?([-.])?(\\d{3})") {}
+  void check_pnum();
+private:
+  regex r;
+  smatch m;
+  vector<string> validated;
+  void valid(const smatch&);
+};
+
+ostream& operator<<(ostream& os, const valid_phone& vp) {
+  for(auto i : vp.validated)
+    os << i << endl;
+  return os;
+}
+
+void valid_phone::valid(const smatch& m) {
+  if (m[1].matched && m[3].matched &&
+      (!m[5].matched != m[4].matched)) {
+     validated.push_back(m.str());
+  } else {
+    if (!m[3].matched) {
+      if (m[4].matched && m[7].matched) {
+        // unlimited length of space
+        string s;
+        for (auto i = 1; i <= 9; ++i) {
+          if (i == 4 || i == 7) {
+            s += " ";
+          }
+          s += m[i];
+        }
+        validated.push_back(s);
+      } else if (!(m[4].matched && m[7].matched) && m[5].str() == m[8].str()) {
+        validated.push_back(m.str());
+      } else {
+
+      }
+    }
+  }
+}
+
+void valid_phone::check_pnum() {
+  // regex 프로그램에 '\' 을 넘겨주기 위해선 '\\' 을 써야한다
+  regex r("(\\()?(\\d{3})(\\))?([[:blank:]]*)?([-.])?(\\d{3})([[:blank:]]*)?([-.])?(\\d{3})");
+  string in;
+  while (getline(cin, in)) {
+    sregex_iterator it(in.begin(), in.end(), r), end;
+    for_each(it, end, [this](const smatch& m)
+             {
+               valid(m);
+             });
+  }
+}
+
+// 17.23
+// regex r("(\\d{5})|((\\d{5})-(\\d{4}))");
