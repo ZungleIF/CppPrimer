@@ -189,11 +189,12 @@ void ch17_18() {
 
 // 17.20, 17.22 
 // TODO
-class valid_phone {
-  friend ostream& operator<<(ostream&, const valid_phone&);
+class phone {
+  friend ostream& operator<<(ostream&, const phone&);
 public:
-  valid_phone() : r("(\\()?(\\d{3})(\\))?([[:blank:]]*)?([-.])?(\\d{3})([[:blank:]]*)?([-.])?(\\d{3})") {}
+  phone() : r("(\\()?(\\d{3})(\\))?([[:blank:]]*)?([-.])?(\\d{3})([[:blank:]]*)?([-.])?(\\d{3})") {}
   void check_pnum();
+  void replace_pnum(const string& fmt = "$2.$6.$9");
 private:
   regex r;
   smatch m;
@@ -201,13 +202,13 @@ private:
   void valid(const smatch&);
 };
 
-ostream& operator<<(ostream& os, const valid_phone& vp) {
+ostream& operator<<(ostream& os, const phone& vp) {
   for(auto i : vp.validated)
     os << i << endl;
   return os;
 }
 
-void valid_phone::valid(const smatch& m) {
+void phone::valid(const smatch& m) {
   if (m[1].matched && m[3].matched &&
       (!m[5].matched != m[4].matched)) {
      validated.push_back(m.str());
@@ -232,11 +233,11 @@ void valid_phone::valid(const smatch& m) {
   }
 }
 
-void valid_phone::check_pnum() {
+void phone::check_pnum() {
   // regex 프로그램에 '\' 을 넘겨주기 위해선 '\\' 을 써야한다
   regex r("(\\()?(\\d{3})(\\))?([[:blank:]]*)?([-.])?(\\d{3})([[:blank:]]*)?([-.])?(\\d{3})");
   string in;
-  while (getline(cin, in)) {
+  while (getline(cin, in) && in != "quit") {
     sregex_iterator it(in.begin(), in.end(), r), end;
     for_each(it, end, [this](const smatch& m)
              {
@@ -247,3 +248,17 @@ void valid_phone::check_pnum() {
 
 // 17.23
 // regex r("(\\d{5})|((\\d{5})-(\\d{4}))");
+
+// 17.24
+void phone::replace_pnum(const string& fmt) {
+  for (auto &i : validated) {
+    i = regex_replace(i, r, fmt, regex_constants::format_no_copy);
+  }
+}
+
+// 17.27
+void ch17_27(string& zip) {
+  regex r("(\\d{5})|((\\d{5})-(\\d{4}))|(\\d{9})");
+  zip = regex_replace(zip, r, "$1-$3");
+  cout << zip << endl;
+}
