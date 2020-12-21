@@ -95,5 +95,8 @@
     <ClInclude Include="include\ch_17.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\ch_18.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -42,6 +42,7 @@
   <ItemGroup>
     <ClInclude Include="include\ch_13.h" />
     <ClInclude Include="include\ch_17.h" />
+    <ClInclude Include="include\ch_18.h" />
     <ClInclude Include="include\function_call_op.h" />
     <ClInclude Include="include\HasPtr.h" />
     <ClInclude Include="include\Message.h" />
