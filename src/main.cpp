@@ -191,12 +191,5 @@ int main() {
 	//	<< zungleif::count(sv, string("owo")) << endl;
 	//vector<const char*> ccv{ "hello", "owo", "whats", "this", "owo", "owo" };
 	//cout << zungleif::count(ccv, "owo") << endl;
-  phone p;
-  p.check_pnum();
-  cout << p;
-  p.replace_pnum();
-  cout << p;
-  string zip("123456789");
-  ch17_27(zip);
 	return 0;
 }

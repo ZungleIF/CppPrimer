@@ -7,6 +7,8 @@
 #include <regex>
 #include <queue>
 #include <iostream>
+#include <random>
+#include <iomanip>
 // tuple, #include <tuple>
 // make_tuple and get<i>(t)
 // 17.1
@@ -261,4 +263,57 @@ void ch17_27(string& zip) {
   regex r("(\\d{5})|((\\d{5})-(\\d{4}))|(\\d{9})");
   zip = regex_replace(zip, r, "$1-$3");
   cout << zip << endl;
+}
+
+// 17.28
+unsigned int my_random() {
+  default_random_engine e;
+  return e();
+}
+
+// 17.29
+unsigned int my_random(int seed) {
+  default_random_engine e(seed);
+  return e();
+}
+
+// 17.30
+unsigned int my_random(int seed, int min, int max) {
+  default_random_engine e(seed);
+  uniform_int_distribution<unsigned int> u(min, max);
+  return u(e);
+}
+
+// 17.31
+// 매번 엔진과 분포를 생성하므로 성능에 부담이 될 뿐만 아니라, 새로 초기화된
+// 엔진과 분포는 매번 같은 순차열의 숫자를 반환하기 때문에, 결국 계속 같은
+// 결과를 되풀이하게 될 것이다.
+
+// 17.32
+// 문제 생길게 있음??
+
+// 17.39
+void count_alpha(const string& _file_name) {
+  fstream file;
+  try {
+    file.open(_file_name, fstream::ate | fstream::in | fstream::out);
+  } catch (exception &e) {
+    cerr << "File cannot be opened: " << e.what() << endl;
+  }
+  auto end_pos = file.tellg();
+  file.seekg(0, fstream::beg);
+  auto cur_pos = file.tellg();
+  size_t cnt = 0;
+  string str;
+  while (cur_pos != end_pos) {
+    file.seekg(cur_pos);
+    getline(file, str);
+    cur_pos = file.tellg();
+    cnt += str.size() + 1;
+    file.seekp(0, fstream::end);
+    if(cur_pos != end_pos) file << cnt << " ";
+    else file << cnt;
+  }
+  file << '\n';
+  file.close();
 }
