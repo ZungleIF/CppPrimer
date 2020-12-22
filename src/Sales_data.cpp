@@ -44,7 +44,7 @@ ostream &operator<<(ostream &os, const Sales_data &rhs) {
 
 void check_bookNo(const Sales_data &sd1, const Sales_data &sd2) {
 	if (sd1.isbn() != sd2.isbn()) {
-		throw logic_error("Adding Sales_data with different isbn's");
+		throw isbn_mismatch("Adding Sales_data with different isbn's", sd1.isbn(), sd2.isbn());
 	}
 }
 

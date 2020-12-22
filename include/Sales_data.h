@@ -38,7 +38,7 @@ Sales_data operator+(const Sales_data &lhs, const Sales_data &rhs);
 std::istream &operator>>(std::istream &is, Sales_data &rhs);
 std::ostream &operator<<(std::ostream &os, const Sales_data &rhs);
 
-
+// checks whether isbn's match
 void check_bookNo(const Sales_data&, const Sales_data&);
 
 // hash class specialization for unordered_multiset of Sales_data
@@ -70,3 +70,32 @@ struct matches_ {
 std::vector<matches_> findBook_(const std::vector<std::vector<Sales_data>>& files, 
                                 const std::string& book_name);
 
+// 18.9
+class out_of_stock : public std::runtime_error {
+public:
+  explicit out_of_stock(const std::string& s) noexcept : runtime_error(s) {}
+};
+
+class isbn_mismatch : public std::logic_error {
+public:
+  explicit isbn_mismatch(const std::string& s) noexcept : logic_error(s) {}
+  isbn_mismatch(const std::string& s, const Sales_data& lhs, const Sales_data& rhs)
+    : logic_error(s), left(lhs.isbn()), right(rhs.isbn()) {}
+  std::string left, right;
+};
+
+//Sales_data sd1("1234", 1, 0.2);
+//Sales_data sd2("4321", 4, 0.1);
+//try
+//{
+//sd1 += sd2;
+//} catch (const isbn_mismatch& e)
+//{
+//  cerr << e.what() << "left: " << e.left << " right: " << e.right << endl;
+//}
+
+// 18.10
+// 예외를 처리하지 않았을 경우에도 정상적으로 컴파일은 되지만 런타임에서 
+// unhandled exception thrown 오류가 나타난다. 반면, 예외를 try...catch 
+// 로 정상적으로 처리할 경우, 프로그램은 계속 정상적으로 실행되고 예외에 관련된 메세지가
+// 콘솔창으로 나타난다.

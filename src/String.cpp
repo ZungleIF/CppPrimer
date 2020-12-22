@@ -31,7 +31,7 @@ String::~String() {
 }
 
 void String::free() {
-	for_each(_begin, _end, [this](char ch) { alloc.destroy(&ch); });
+	for_each(_begin, _end, [this](char& ch) { alloc.destroy(&ch); });
 	alloc.deallocate(_begin, length());
 	_begin = _end = nullptr;
 }
@@ -83,6 +83,6 @@ String operator+(const String& lhs, const String& rhs) {
 
 size_t c_str_len(const char *c_str) {
 	int sz = 0;
-	for (auto cs_ptr = c_str; *cs_ptr != '\0' && *cs_ptr != '\n'; ++sz, cs_ptr++) {}
+	for (auto cs_ptr = c_str; *cs_ptr != '\0' && *cs_ptr != '\n'; ++sz, ++cs_ptr) {}
 	return sz;
 }
